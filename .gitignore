@@ -1,0 +1,148 @@
+# =========================
+# Common
+# =========================
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Editor / IDE
+.idea/
+*.iws
+*.iml
+*.ipr
+.vscode/
+!.vscode/extensions.json
+
+# Agent / Local AI tool files
+.agents/
+
+
+# =========================
+# Backend - Spring Boot / Gradle
+# =========================
+
+# Spring Initializr helper
+backend/HELP.md
+
+# Gradle
+backend/.gradle/
+backend/build/
+!backend/gradle/wrapper/gradle-wrapper.jar
+
+# Keep nested build directories under source if ever needed
+!backend/**/src/main/**/build/
+!backend/**/src/test/**/build/
+
+# STS / Eclipse
+backend/.apt_generated/
+backend/.classpath
+backend/.factorypath
+backend/.project
+backend/.settings/
+backend/.springBeans
+backend/.sts4-cache/
+backend/bin/
+!backend/**/src/main/**/bin/
+!backend/**/src/test/**/bin/
+
+# IntelliJ IDEA
+backend/out/
+!backend/**/src/main/**/out/
+!backend/**/src/test/**/out/
+
+# NetBeans
+backend/nbproject/private/
+backend/nbbuild/
+backend/dist/
+backend/nbdist/
+backend/.nb-gradle/
+
+# VS Code
+backend/.vscode/
+
+# Backend local application config
+backend/src/main/resources/application-local.yml
+backend/src/main/resources/application-local.properties
+backend/src/main/resources/application-secret.yml
+backend/src/main/resources/application-secret.properties
+
+# H2 Database files
+backend/*.mv.db
+backend/*.trace.db
+backend/**/*.mv.db
+backend/**/*.trace.db
+
+
+# =========================
+# Frontend - React / Vite
+# =========================
+
+# Dependencies
+frontend/node_modules/
+
+# Build outputs
+frontend/dist/
+frontend/dist-ssr/
+
+# Package manager logs
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/lerna-debug.log*
+
+# Local env files
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# Vite / local files
+frontend/*.local
+
+# Frontend editor files
+frontend/.vscode/*
+!frontend/.vscode/extensions.json
+frontend/.idea/
+frontend/*.suo
+frontend/*.ntvs*
+frontend/*.njsproj
+frontend/*.sln
+frontend/*.sw?
+
+
+# =========================
+# Docker / Local runtime data
+# =========================
+
+# If you ever create local DB/data folders inside repo, do not commit them
+docker-data/
+mysql-data/
+data/
+backup/
+backups/
+
+# Docker compose local override files
+docker-compose.override.yml
+compose.override.yml
+
+
+# =========================
+# Git migration backup
+# =========================
+
+# Temporary backup if backend used to have its own .git
+backend/.git-backup/
