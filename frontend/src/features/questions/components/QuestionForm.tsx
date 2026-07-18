@@ -12,12 +12,16 @@ interface QuestionFormProps {
     questionType: InterviewQuestion['questionType'];
   }) => void;
   onCancel: () => void;
+  isSubmitting?: boolean;
+  submitError?: string | null;
 }
 
 export const QuestionForm: React.FC<QuestionFormProps> = ({
   initialData,
   onSubmit,
-  onCancel
+  onCancel,
+  isSubmitting = false,
+  submitError = null
 }) => {
   const [question, setQuestion] = useState(initialData?.question || '');
   const [answer, setAnswer] = useState(initialData?.answer || '');
@@ -60,6 +64,13 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 max-w-4xl bg-zinc-900 border border-zinc-800 rounded-lg p-6 md:p-8">
+      {/* Submit Server Error */}
+      {submitError && (
+        <div className="bg-red-950/20 border border-red-900/30 p-4 rounded-md text-red-400 text-xs font-mono">
+          {submitError}
+        </div>
+      )}
+
       {/* Question Textarea */}
       <div className="space-y-2">
         <label htmlFor="question" className="block text-xs font-mono font-semibold uppercase tracking-wider text-zinc-400">
@@ -69,12 +80,13 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
           id="question"
           rows={3}
           value={question}
+          disabled={isSubmitting}
           onChange={(e) => {
             setQuestion(e.target.value);
             if (errors.question) setErrors(prev => ({ ...prev, question: undefined }));
           }}
           placeholder="면접 질문 내용을 상세히 입력하세요..."
-          className={`w-full bg-zinc-950 border rounded-md p-3.5 text-zinc-100 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 font-sans resize-y transition-all ${
+          className={`w-full bg-zinc-950 border rounded-md p-3.5 text-zinc-100 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 font-sans resize-y transition-all disabled:opacity-50 ${
             errors.question ? 'border-red-500/50 focus:ring-red-500 focus:border-red-500' : 'border-zinc-800'
           }`}
         />
@@ -92,12 +104,13 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
           id="answer"
           rows={10}
           value={answer}
+          disabled={isSubmitting}
           onChange={(e) => {
             setAnswer(e.target.value);
             if (errors.answer) setErrors(prev => ({ ...prev, answer: undefined }));
           }}
           placeholder="모범 답변이나 학습을 위한 참고 내용을 정리해 주세요. 줄 바꿈 및 마크다운처럼 구조화하여 작성할 수 있습니다."
-          className={`w-full bg-zinc-950 border rounded-md p-3.5 text-zinc-100 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 font-mono resize-y transition-all ${
+          className={`w-full bg-zinc-950 border rounded-md p-3.5 text-zinc-100 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 font-mono resize-y transition-all disabled:opacity-50 ${
             errors.answer ? 'border-red-500/50 focus:ring-red-500 focus:border-red-500' : 'border-zinc-800'
           }`}
         />
@@ -116,8 +129,9 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
           <select
             id="category"
             value={category}
+            disabled={isSubmitting}
             onChange={(e) => setCategory(e.target.value as InterviewQuestion['category'])}
-            className="w-full bg-zinc-950 border border-zinc-800 rounded-md p-2.5 text-zinc-200 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+            className="w-full bg-zinc-950 border border-zinc-800 rounded-md p-2.5 text-zinc-200 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-50"
           >
             {CATEGORIES.map((cat) => (
               <option key={cat} value={cat}>
@@ -135,8 +149,9 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
           <select
             id="difficulty"
             value={difficulty}
+            disabled={isSubmitting}
             onChange={(e) => setDifficulty(e.target.value as InterviewQuestion['difficulty'])}
-            className="w-full bg-zinc-950 border border-zinc-800 rounded-md p-2.5 text-zinc-200 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+            className="w-full bg-zinc-950 border border-zinc-800 rounded-md p-2.5 text-zinc-200 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-50"
           >
             {DIFFICULTIES.map((diff) => (
               <option key={diff} value={diff}>
@@ -154,8 +169,9 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
           <select
             id="questionType"
             value={questionType}
+            disabled={isSubmitting}
             onChange={(e) => setQuestionType(e.target.value as InterviewQuestion['questionType'])}
-            className="w-full bg-zinc-950 border border-zinc-800 rounded-md p-2.5 text-zinc-200 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+            className="w-full bg-zinc-950 border border-zinc-800 rounded-md p-2.5 text-zinc-200 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-50"
           >
             {QUESTION_TYPES.map((type) => (
               <option key={type} value={type}>
@@ -171,17 +187,20 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 border border-zinc-800 hover:bg-zinc-800 hover:text-zinc-100 rounded text-sm font-medium text-zinc-400 transition-colors duration-150"
+          disabled={isSubmitting}
+          className="px-4 py-2 border border-zinc-800 hover:bg-zinc-800 hover:text-zinc-100 rounded text-sm font-medium text-zinc-400 transition-colors duration-150 disabled:opacity-50"
         >
           Cancel
         </button>
         <button
           type="submit"
-          className="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white rounded text-sm font-medium shadow transition-colors duration-150"
+          disabled={isSubmitting}
+          className="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white rounded text-sm font-medium shadow transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Save Question
+          {isSubmitting ? 'Saving...' : 'Save Question'}
         </button>
       </div>
     </form>
   );
 };
+

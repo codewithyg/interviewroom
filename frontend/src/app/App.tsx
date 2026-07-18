@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { mockQuestions } from '../features/questions/data/mockQuestions';
-import type { InterviewQuestion } from '../features/questions/types/question';
+import type { InterviewQuestionListItem } from '../features/questions/types/question';
+import { getQuestions } from '../features/questions/api/questionApi';
 import { AppLayout } from '../components/layout/AppLayout';
 import { DashboardPage } from '../features/questions/pages/DashboardPage';
 import { QuestionListPage } from '../features/questions/pages/QuestionListPage';
@@ -10,52 +10,33 @@ import { QuestionCreatePage } from '../features/questions/pages/QuestionCreatePa
 import { QuestionEditPage } from '../features/questions/pages/QuestionEditPage';
 
 export interface QuestionsContextType {
-  questions: InterviewQuestion[];
-  addQuestion: (data: Omit<InterviewQuestion, 'id' | 'createdAt' | 'updatedAt'>) => number;
-  updateQuestion: (id: number, data: Partial<InterviewQuestion>) => void;
-  deleteQuestion: (id: number) => void;
+  questions: InterviewQuestionListItem[];
+  isLoading: boolean;
+  error: Error | null;
+  refreshQuestions: () => Promise<void>;
 }
 
 const App: React.FC = () => {
-  const [questions, setQuestions] = useState<InterviewQuestion[]>(mockQuestions);
+  const [questions, setQuestions] = useState<InterviewQuestionListItem[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<Error | null>(null);
 
-  // Add Question - returns the newly created question's ID
-  const addQuestion = (data: Omit<InterviewQuestion, 'id' | 'createdAt' | 'updatedAt'>) => {
-    const nextId = questions.length > 0 ? Math.max(...questions.map((q) => q.id)) + 1 : 1;
-    const nowStr = new Date().toISOString();
+  const refreshQuestions = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const data = await getQuestions();
+      setQuestions(data);
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error('Failed to fetch questions'));
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
-    const newQuestion: InterviewQuestion = {
-      ...data,
-      id: nextId,
-      createdAt: nowStr,
-      updatedAt: nowStr,
-    };
-
-    setQuestions((prev) => [...prev, newQuestion]);
-    return nextId;
-  };
-
-  // Update Question
-  const updateQuestion = (id: number, data: Partial<InterviewQuestion>) => {
-    const nowStr = new Date().toISOString();
-
-    setQuestions((prev) =>
-      prev.map((q) =>
-        q.id === id
-          ? {
-              ...q,
-              ...data,
-              updatedAt: nowStr,
-            }
-          : q
-      )
-    );
-  };
-
-  // Delete Question
-  const deleteQuestion = (id: number) => {
-    setQuestions((prev) => prev.filter((q) => q.id !== id));
-  };
+  useEffect(() => {
+    refreshQuestions();
+  }, [refreshQuestions]);
 
   return (
     <BrowserRouter>
@@ -66,9 +47,9 @@ const App: React.FC = () => {
             <AppLayout
               questionsCount={questions.length}
               questions={questions}
-              addQuestion={addQuestion}
-              updateQuestion={updateQuestion}
-              deleteQuestion={deleteQuestion}
+              isLoading={isLoading}
+              error={error}
+              refreshQuestions={refreshQuestions}
             />
           }
         >
@@ -104,3 +85,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+

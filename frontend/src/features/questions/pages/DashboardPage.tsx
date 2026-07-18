@@ -7,7 +7,26 @@ import { QuestionSummaryCards } from '../components/QuestionSummaryCards';
 import { Badge } from '../../../components/ui/Badge';
 
 export const DashboardPage: React.FC = () => {
-  const { questions } = useOutletContext<QuestionsContextType>();
+  const { questions, isLoading, error } = useOutletContext<QuestionsContextType>();
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 space-y-4">
+        <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-zinc-400 text-xs font-mono uppercase tracking-wider">LOADING_DASHBOARD_DATA...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-950/10 border border-red-900/30 p-8 rounded-lg text-center max-w-lg mx-auto my-16 space-y-3">
+        <AlertCircle className="w-8 h-8 text-red-500 mx-auto" />
+        <p className="text-red-400 text-sm font-semibold">데이터를 불러오는 중 오류가 발생했습니다.</p>
+        <p className="text-zinc-500 text-xs font-mono whitespace-pre-wrap">{error.message}</p>
+      </div>
+    );
+  }
 
   // Sort and slice for recent questions (up to 4)
   const recentQuestions = [...questions]
@@ -137,3 +156,4 @@ export const DashboardPage: React.FC = () => {
     </div>
   );
 };
+

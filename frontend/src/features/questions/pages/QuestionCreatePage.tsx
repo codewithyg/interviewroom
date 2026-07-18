@@ -1,24 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useOutletContext } from 'react-router-dom';
 import type { QuestionsContextType } from '../../../app/App';
 import { QuestionForm } from '../components/QuestionForm';
+import { createQuestion } from '../api/questionApi';
 
 export const QuestionCreatePage: React.FC = () => {
   const navigate = useNavigate();
-  const { addQuestion } = useOutletContext<QuestionsContextType>();
+  const { refreshQuestions } = useOutletContext<QuestionsContextType>();
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const handleSubmit = (data: {
+  const handleSubmit = async (data: {
     question: string;
     answer: string;
     category: QuestionsContextType['questions'][0]['category'];
     difficulty: QuestionsContextType['questions'][0]['difficulty'];
     questionType: QuestionsContextType['questions'][0]['questionType'];
   }) => {
-    // add question to mock array and get the new ID
-    const newId = addQuestion(data);
-    // Navigate to the detail page of the newly created question
-    navigate(`/questions/${newId}`);
+    setIsSubmitting(true);
+    setSubmitError(null);
+    try {
+      const newQuestion = await createQuestion(data);
+      await refreshQuestions(); // Update the global count in sidebar/header
+      if (newQuestion && newQuestion.id) {
+        navigate(`/questions/${newQuestion.id}`);
+      } else {
+        navigate('/questions');
+      }
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : '질문을 등록하는 도중 오류가 발생했습니다.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleCancel = () => {
@@ -44,7 +58,13 @@ export const QuestionCreatePage: React.FC = () => {
       </div>
 
       {/* Reusable QuestionForm */}
-      <QuestionForm onSubmit={handleSubmit} onCancel={handleCancel} />
+      <QuestionForm
+        onSubmit={handleSubmit}
+        onCancel={handleCancel}
+        isSubmitting={isSubmitting}
+        submitError={submitError}
+      />
     </div>
   );
 };
+

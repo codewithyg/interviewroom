@@ -1,11 +1,12 @@
 import React from 'react';
 import { CATEGORIES, DIFFICULTIES } from '../types/question';
-import type { InterviewQuestion } from '../types/question';
+import type { InterviewQuestionListItem } from '../types/question';
 import { Badge } from '../../../components/ui/Badge';
 
 interface QuestionSummaryCardsProps {
-  questions: InterviewQuestion[];
+  questions: InterviewQuestionListItem[];
 }
+
 
 export const QuestionSummaryCards: React.FC<QuestionSummaryCardsProps> = ({ questions }) => {
   // Calculate category stats

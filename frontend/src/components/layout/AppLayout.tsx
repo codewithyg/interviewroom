@@ -2,22 +2,22 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
-import type { InterviewQuestion } from '../../features/questions/types/question';
+import type { InterviewQuestionListItem } from '../../features/questions/types/question';
 
 interface AppLayoutProps {
   questionsCount: number;
-  questions: InterviewQuestion[];
-  addQuestion: (data: Omit<InterviewQuestion, 'id' | 'createdAt' | 'updatedAt'>) => number;
-  updateQuestion: (id: number, data: Partial<InterviewQuestion>) => void;
-  deleteQuestion: (id: number) => void;
+  questions: InterviewQuestionListItem[];
+  isLoading: boolean;
+  error: Error | null;
+  refreshQuestions: () => Promise<void>;
 }
 
 export const AppLayout: React.FC<AppLayoutProps> = ({
   questionsCount,
   questions,
-  addQuestion,
-  updateQuestion,
-  deleteQuestion
+  isLoading,
+  error,
+  refreshQuestions
 }) => {
   return (
     <div className="flex min-h-screen bg-zinc-950 text-zinc-100 antialiased">
@@ -31,10 +31,11 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
 
         {/* Content Outlet */}
         <main className="flex-1 p-8 overflow-y-auto max-w-7xl w-full mx-auto">
-          <Outlet context={{ questions, addQuestion, updateQuestion, deleteQuestion }} />
+          <Outlet context={{ questions, isLoading, error, refreshQuestions }} />
         </main>
       </div>
     </div>
   );
 };
+
 

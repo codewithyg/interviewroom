@@ -50,7 +50,7 @@ export const Sidebar: React.FC = () => {
       <div className="p-4 border-t border-zinc-800 bg-zinc-950/50 space-y-2">
         <div className="flex items-center space-x-2 text-xs text-zinc-500 font-mono">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>MOCK SERVER ACTIVE</span>
+          <span>API SERVER ACTIVE</span>
         </div>
         <div className="flex justify-between items-center text-[11px] text-zinc-600 font-mono">
           <span>v1.0.0 (client)</span>
@@ -62,3 +62,4 @@ export const Sidebar: React.FC = () => {
     </aside>
   );
 };
+

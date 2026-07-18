@@ -1,11 +1,40 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
-import { Plus, HelpCircle } from 'lucide-react';
+import { Plus, HelpCircle, AlertCircle } from 'lucide-react';
 import type { QuestionsContextType } from '../../../app/App';
 import { QuestionTable } from '../components/QuestionTable';
 
 export const QuestionListPage: React.FC = () => {
-  const { questions } = useOutletContext<QuestionsContextType>();
+  const { questions, isLoading, error, refreshQuestions } = useOutletContext<QuestionsContextType>();
+
+  useEffect(() => {
+    refreshQuestions();
+  }, [refreshQuestions]);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 space-y-4">
+        <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-zinc-400 text-xs font-mono uppercase tracking-wider">LOADING_QUESTIONS...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-950/10 border border-red-900/30 p-8 rounded-lg text-center max-w-lg mx-auto my-16 space-y-3">
+        <AlertCircle className="w-8 h-8 text-red-500 mx-auto" />
+        <p className="text-red-400 text-sm font-semibold">데이터를 불러오는 중 오류가 발생했습니다.</p>
+        <p className="text-zinc-500 text-xs font-mono whitespace-pre-wrap">{error.message}</p>
+        <button
+          onClick={() => refreshQuestions()}
+          className="mt-2 inline-flex items-center justify-center px-4 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-mono rounded border border-zinc-700 transition-colors"
+        >
+          RETRY
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -45,3 +74,4 @@ export const QuestionListPage: React.FC = () => {
     </div>
   );
 };
+

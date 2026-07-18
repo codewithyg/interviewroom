@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { Database, WifiOff, Cpu } from 'lucide-react';
+import { Database, Wifi, Cpu } from 'lucide-react';
 
 interface HeaderProps {
   questionsCount: number;
@@ -31,14 +31,14 @@ export const Header: React.FC<HeaderProps> = ({ questionsCount }) => {
       <div className="flex items-center space-x-6">
         {/* Mock Indicator */}
         <div className="flex items-center space-x-2 bg-zinc-950 px-3 py-1 rounded border border-zinc-800 text-[11px] font-mono text-zinc-400">
-          <WifiOff className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-          <span>API: OFFLINE</span>
+          <Wifi className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+          <span>API: ONLINE</span>
         </div>
 
         {/* Database Status Indicator */}
         <div className="flex items-center space-x-2 bg-zinc-950 px-3 py-1 rounded border border-zinc-800 text-[11px] font-mono text-zinc-400">
           <Database className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
-          <span>MEM_DB: {questionsCount} ROWS</span>
+          <span>DB: SERVER ({questionsCount} ROWS)</span>
         </div>
 
         {/* User Info (Mock) */}
@@ -55,3 +55,4 @@ export const Header: React.FC<HeaderProps> = ({ questionsCount }) => {
     </header>
   );
 };
+

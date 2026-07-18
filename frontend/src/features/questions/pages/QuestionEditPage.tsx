@@ -1,22 +1,87 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, AlertCircle } from 'lucide-react';
 import { useOutletContext } from 'react-router-dom';
 import type { QuestionsContextType } from '../../../app/App';
 import { QuestionForm } from '../components/QuestionForm';
+import { getQuestion, updateQuestion as updateQuestionApi } from '../api/questionApi';
+import type { InterviewQuestionDetail } from '../types/question';
 
 export const QuestionEditPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { questions, updateQuestion } = useOutletContext<QuestionsContextType>();
+  const { refreshQuestions } = useOutletContext<QuestionsContextType>();
 
   const questionId = Number(id);
-  const question = questions.find((q) => q.id === questionId);
+  const [question, setQuestion] = useState<InterviewQuestionDetail | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<Error | null>(null);
 
-  if (!question) {
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchQuestion = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const data = await getQuestion(questionId);
+        setQuestion(data);
+      } catch (err) {
+        setError(err instanceof Error ? err : new Error('Failed to load question'));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (!isNaN(questionId)) {
+      fetchQuestion();
+    } else {
+      setIsLoading(false);
+      setError(new Error('Invalid question ID'));
+    }
+  }, [questionId]);
+
+  const handleSubmit = async (data: {
+    question: string;
+    answer: string;
+    category: InterviewQuestionDetail['category'];
+    difficulty: InterviewQuestionDetail['difficulty'];
+    questionType: InterviewQuestionDetail['questionType'];
+  }) => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+    try {
+      await updateQuestionApi(questionId, data);
+      await refreshQuestions(); // Update global count/list
+      navigate(`/questions/${questionId}`);
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : '질문을 수정하는 도중 오류가 발생했습니다.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleCancel = () => {
+    navigate(`/questions/${questionId}`);
+  };
+
+  if (isLoading) {
     return (
-      <div className="text-center py-16 space-y-4">
-        <p className="text-zinc-400 text-sm">수정할 질문을 찾을 수 없습니다.</p>
+      <div className="flex flex-col items-center justify-center py-24 space-y-4">
+        <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-zinc-400 text-xs font-mono uppercase tracking-wider">LOADING_QUESTION_DETAILS...</p>
+      </div>
+    );
+  }
+
+  if (error || !question) {
+    return (
+      <div className="text-center py-16 space-y-4 max-w-md mx-auto">
+        <AlertCircle className="w-8 h-8 text-zinc-550 mx-auto" />
+        <p className="text-zinc-400 text-sm font-semibold">
+          {error ? error.message : '수정할 질문을 찾을 수 없습니다.'}
+        </p>
         <Link
           to="/questions"
           className="inline-flex items-center space-x-2 text-xs font-mono text-indigo-400 hover:text-indigo-300"
@@ -27,21 +92,6 @@ export const QuestionEditPage: React.FC = () => {
       </div>
     );
   }
-
-  const handleSubmit = (data: {
-    question: string;
-    answer: string;
-    category: typeof question.category;
-    difficulty: typeof question.difficulty;
-    questionType: typeof question.questionType;
-  }) => {
-    updateQuestion(questionId, data);
-    navigate(`/questions/${questionId}`);
-  };
-
-  const handleCancel = () => {
-    navigate(`/questions/${questionId}`);
-  };
 
   return (
     <div className="space-y-6">
@@ -70,7 +120,10 @@ export const QuestionEditPage: React.FC = () => {
         initialData={question}
         onSubmit={handleSubmit}
         onCancel={handleCancel}
+        isSubmitting={isSubmitting}
+        submitError={submitError}
       />
     </div>
   );
 };
+

@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ExternalLink, Calendar } from 'lucide-react';
-import type { InterviewQuestion } from '../types/question';
+import type { InterviewQuestionListItem } from '../types/question';
 import { Badge } from '../../../components/ui/Badge';
 
 interface QuestionTableProps {
-  questions: InterviewQuestion[];
+  questions: InterviewQuestionListItem[];
 }
+
 
 export const QuestionTable: React.FC<QuestionTableProps> = ({ questions }) => {
   const formatDate = (dateString: string) => {
