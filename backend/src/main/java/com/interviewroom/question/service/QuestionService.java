@@ -5,6 +5,7 @@ import com.interviewroom.question.dto.QuestionCreateRequest;
 import com.interviewroom.question.dto.QuestionDetailResponse;
 import com.interviewroom.question.dto.QuestionListResponse;
 import com.interviewroom.question.dto.QuestionUpdateRequest;
+import com.interviewroom.question.exception.QuestionNotFoundException;
 import com.interviewroom.question.repository.InterviewQuestionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,6 +73,6 @@ public class QuestionService {
 
     private InterviewQuestion findQuestionById(Long questionId) {
         return interviewQuestionRepository.findById(questionId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 면접 질문입니다."));
+                .orElseThrow(QuestionNotFoundException::new);
     }
 }
