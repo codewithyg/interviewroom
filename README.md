@@ -20,10 +20,9 @@ InterviewRoom은 면접 준비 과정에서 정리한 예상 질문과 실제 �
 면접을 준비하다 보면 공부하면서 정리한 질문, 실제 면접에서 받은 질문, 다시 확인하고 싶은 질문이 계속 쌓입니다. 처음에는 메모장이나 노션으로도 충분하지만, 질문이 많아질수록 주제별로 분류하거나 난이도를 구분하기가 어려워집니다.
 
 이 프로젝트는 그런 문제를 작게 풀어보기 위해 시작했습니다.  
-v1에서는 많은 기능을 한 번에 넣기보다, 면접 질문을 등록하고 조회하고 수정하고 삭제하는 기본 CRUD 흐름을 먼저 완성하는 것을 목표로 합니다.
+v1에서는 많은 기능을 한 번에 넣기보다, 면접 질문을 등록하고 조회하고 수정하고 삭제하는 기본 CRUD 흐름을 완성하는 것을 목표로 합니다.
 
-현재는 기획 및 설계 문서화를 마쳤고, 프론트엔드 mock UI를 먼저 구성해 서비스의 전체적인 화면 흐름을 확인한 상태입니다.  
-이후 Backend API를 구현하고, 프론트엔드와 연결해 실제로 사용할 수 있는 Web 서비스 형태로 확장할 예정입니다.
+현재는 기획 및 설계 문서화, Frontend mock UI 구성 및 Backend v1 CRUD API 구현을 마쳤으며, Frontend와 Backend API 연동 확인을 완료했습니다. 브라우저와 Postman을 통해 실제 API 연동 상태 및 데이터가 정상적으로 송수신되는 것을 검증하였습니다.
 
 ---
 
@@ -50,10 +49,10 @@ InterviewRoom은 다음과 같은 문제의식에서 출발했습니다.
 | 프로젝트 형태 | 개인 프로젝트 |
 | 개발 기간 | 2026.05 ~ 진행 중 |
 | 플랫폼 | Web |
-| 현재 구현 범위 | Frontend mock UI 구현, Backend API 구현 준비 |
+| 현재 구현 범위 | Frontend mock UI 및 Backend v1 CRUD API 구현 완료, API 연동 완료 |
 | 최종 목표 | Frontend + Backend를 연결한 면접 질문 관리 서비스 |
 | 인원 | 1명 |
-| 현재 단계 | 기획 및 설계 문서화 완료, Frontend v1 mock UI 구성 완료, Backend v1 구현 준비 단계 |
+| 현재 단계 | 기획 및 설계 문서화 완료, Frontend mock UI 및 Backend v1 CRUD API 구현 완료, Frontend-Backend API 연동 확인 완료 |
 | v1 목표 | 면접 질문 CRUD 완성 |
 
 ---
@@ -79,19 +78,19 @@ InterviewRoom은 다음과 같은 문제의식에서 출발했습니다.
 ### v1 목표 기능
 
 v1에서는 면접 질문 CRUD 흐름을 완성하는 것을 목표로 합니다.  
-현재는 mock data 기반으로 프론트엔드 화면 흐름을 먼저 구성했고, 이후 Backend API를 구현해 실제 데이터와 연결할 예정입니다.
+현재 Frontend mock UI 구성과 Backend REST API 구현을 모두 완료하였고, 두 영역을 서로 연결하여 API 연동 검증까지 마쳤습니다.
 
 | 기능 | 설명 | Frontend | Backend API |
 | --- | --- | --- | --- |
-| 대시보드 | 전체 질문 수, 예상/실제 질문 수, 카테고리/난이도별 요약을 확인한다. | Mock UI 구현 | 구현 예정 |
-| 면접 질문 등록 | 새로운 면접 질문과 답변을 기록한다. | Mock UI 구현 | 구현 예정 |
-| 면접 질문 목록 조회 | 등록된 면접 질문을 목록으로 확인한다. | Mock UI 구현 | 구현 예정 |
-| 면접 질문 상세 조회 | 선택한 질문의 상세 내용과 답변을 확인한다. | Mock UI 구현 | 구현 예정 |
-| 면접 질문 수정 | 등록된 질문 내용, 답변, 분류 정보를 수정한다. | Mock UI 구현 | 구현 예정 |
-| 면접 질문 삭제 | 더 이상 필요하지 않은 질문을 삭제한다. | Mock UI 구현 | 구현 예정 |
-| 카테고리 선택 | 질문의 주제를 Java, Spring, JPA 등으로 구분한다. | Mock UI 구현 | 구현 예정 |
-| 난이도 선택 | 질문의 난이도를 쉬움, 보통, 어려움으로 구분한다. | Mock UI 구현 | 구현 예정 |
-| 질문 유형 선택 | 예상 질문과 실제 면접 질문을 구분한다. | Mock UI 구현 | 구현 예정 |
+| 대시보드 | 전체 질문 수, 예상/실제 질문 수, 카테고리/난이도별 요약을 확인한다. | 구현 완료 | API 연동 완료 |
+| 면접 질문 등록 | 새로운 면접 질문과 답변을 기록한다. | 구현 완료 | API 연동 완료 |
+| 면접 질문 목록 조회 | 등록된 면접 질문을 목록으로 확인한다. | 구현 완료 | API 연동 완료 |
+| 면접 질문 상세 조회 | 선택한 질문의 상세 내용과 답변을 확인한다. | 구현 완료 | API 연동 완료 |
+| 면접 질문 수정 | 등록된 질문 내용, 답변, 분류 정보를 수정한다. | 구현 완료 | API 연동 완료 |
+| 면접 질문 삭제 | 더 이상 필요하지 않은 질문을 삭제한다. | 구현 완료 | API 연동 완료 |
+| 카테고리 선택 | 질문의 주제를 Java, Spring, JPA 등으로 구분한다. | 구현 완료 | API 연동 완료 |
+| 난이도 선택 | 질문의 난이도를 쉬움, 보통, 어려움으로 구분한다. | 구현 완료 | API 연동 완료 |
+| 질문 유형 선택 | 예상 질문과 실제 면접 질문을 구분한다. | 구현 완료 | API 연동 완료 |
 
 ### 분류 기준
 
@@ -159,18 +158,18 @@ v1 구현 중에는 범위에 포함하지 않습니다.
 
 | 기술명 | 용도 | 상태 |
 | --- | --- | --- |
-| Java 21 | 백엔드 개발 언어 | 사용 예정 |
-| Spring Boot | 애플리케이션 개발 | 사용 예정 |
-| Spring Web | Web / API 개발 | 사용 예정 |
-| Spring Data JPA | 데이터 접근 | 사용 예정 |
-| Bean Validation | 입력값 검증 | 사용 예정 |
-| Gradle | 빌드 도구 | 사용 예정 |
+| Java 21 | 백엔드 개발 언어 | 사용 중 |
+| Spring Boot | 애플리케이션 개발 | 사용 중 |
+| Spring Web | Web / API 개발 | 사용 중 |
+| Spring Data JPA | 데이터 접근 | 사용 중 |
+| Bean Validation | 입력값 검증 | 사용 중 |
+| Gradle | 빌드 도구 | 사용 중 |
 
 ### Database
 
 | 기술명 | 용도 | 상태 |
 | --- | --- | --- |
-| MySQL | 개발용 데이터베이스 | 구성 완료 |
+| MySQL | 개발용 데이터베이스 | 사용 중 |
 | H2 | 로컬 테스트 및 간단한 실행 환경 | 사용 예정 |
 
 ### Infra / Tools
@@ -186,21 +185,31 @@ v1 구현 중에는 범위에 포함하지 않습니다.
 
 ## 프로젝트 구조도
 
-현재 프로젝트는 Frontend와 Backend를 분리한 구조로 관리합니다.
+현재 프로젝트는 Frontend와 Backend를 분리한 Monorepo 구조로 관리합니다.
 
 ```text
 InterviewRoom
 ├── backend
 │   ├── src
-│   │   └── ... (Backend v1 구현 예정)
+│   │   ├── main
+│   │   │   ├── java/com/interviewroom
+│   │   │   │   ├── global (공통 설정, 예외 처리 등)
+│   │   │   │   ├── question (질문 도메인 CRUD 및 REST Controller)
+│   │   │   │   └── InterviewroomApplication.java
+│   │   │   └── resources (application.yml 설정 등)
+│   │   └── test (단위 및 통합 테스트)
 │   ├── build.gradle
 │   ├── settings.gradle
 │   └── ...
 ├── frontend
 │   ├── src
-│   │   ├── app
-│   │   ├── components
-│   │   └── features
+│   │   ├── app (App 컴포넌트 및 라우터)
+│   │   ├── assets (이미지 등 정적 파일)
+│   │   ├── components (공통 레이아웃 및 UI 요소)
+│   │   ├── features
+│   │   │   └── questions (질문 CRUD 페이지, 컴포넌트 및 API 모듈)
+│   │   ├── index.css
+│   │   └── main.tsx
 │   ├── package.json
 │   ├── vite.config.ts
 │   └── ...
@@ -212,3 +221,43 @@ InterviewRoom
 │   └── 05-backlog.md
 ├── README.md
 └── .gitignore
+```
+
+---
+
+## 시스템 아키텍처
+
+| 계층 | 구성 요소 | 설명 / 역할 | 연동 및 연결 상태 |
+| --- | --- | --- | --- |
+| **Presentation** | Frontend (React) | 사용자 인터페이스 제공, 사용자 입력 처리, API 호출 | 백엔드 API 연동 완료 (REST API) |
+| **Application** | Backend (Spring Boot) | 비즈니스 로직 처리, REST API 엔드포인트 제공 | 프론트엔드 연동 완료 / DB 연결 완료 |
+| **Database** | MySQL | 질문 및 카테고리 데이터 영구 저장 | Home Server VM Docker 컨테이너 구동, 백엔드 연동 완료 |
+
+---
+
+## 팀원 구성 및 역할
+
+- **이영근 (1인 개인 프로젝트)**
+  - 기획 및 요구사항 정의서 작성
+  - Frontend mock UI 개발 및 Spring Boot REST API 연동 완료
+  - Backend Spring Boot REST API 개발 및 DB 연동 완료
+  - Home Server VM 상의 Docker 컨테이너로 MySQL Database 환경 구축
+
+---
+
+## 프로젝트 산출물
+
+- **기획 및 설계 문서**
+  - [프로젝트 개요 (docs/01-project-overview.md)](docs/01-project-overview.md)
+  - [MVP 개발 범위 (docs/02-mvp-scope.md)](docs/02-mvp-scope.md)
+  - [요구사항 정의서 (docs/03-requirements.md)](docs/03-requirements.md)
+  - [개념 설계서 (docs/04-concept-design.md)](docs/04-concept-design.md)
+  - [프로젝트 백로그 (docs/05-backlog.md)](docs/05-backlog.md)
+- **개발 검증 자료**
+  - **API 연동 확인 완료**: 브라우저를 통한 Frontend-Backend CRUD 기능 연동 테스트 완료
+  - **Postman 테스트 확인 완료**: Backend API 기능 검증 및 응답 확인 완료
+- **추후 추가 예정 항목**
+  - 화면 설계서 (와이어프레임): 추후 추가 예정
+  - 프로젝트 일정표: 추후 추가 예정
+  - Swagger API Docs: 추후 추가 예정
+  - 배포 URL: 추후 추가 예정
