@@ -44,7 +44,7 @@ public class QuestionService {
     }
 
     @Transactional(readOnly = true)
-    public List<QuestionListResponse> getQuestion(Long questionId) {
+    public QuestionDetailResponse getQuestion(Long questionId) {
         InterviewQuestion interviewQuestion = findQuestionById(questionId);
         return new QuestionDetailResponse(interviewQuestion);
     }
