@@ -32,8 +32,7 @@ public class InterviewQuestion extends BaseTimeEntity {
     protected InterviewQuestion() {
     }
 
-    public InterviewQuestion(Long id, String question, String answer, Category category, Difficulty difficulty, QuestionType questionType) {
-        this.id = id;
+    public InterviewQuestion(String question, String answer, Category category, Difficulty difficulty, QuestionType questionType) {
         this.question = question;
         this.answer = answer;
         this.category = category;
