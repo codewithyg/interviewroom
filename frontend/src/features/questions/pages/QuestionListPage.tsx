@@ -1,15 +1,52 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
-import { Plus, HelpCircle, AlertCircle } from 'lucide-react';
+import { Plus, HelpCircle, AlertCircle, SearchX } from 'lucide-react';
 import type { QuestionsContextType } from '../../../app/App';
 import { QuestionTable } from '../components/QuestionTable';
+import { QuestionSearchFilter } from '../components/QuestionSearchFilter';
+import type { QuestionSearchCondition } from '../types/questionSearch';
+import { filterQuestions } from '../utils/questionSearch';
 
 export const QuestionListPage: React.FC = () => {
   const { questions, isLoading, error, refreshQuestions } = useOutletContext<QuestionsContextType>();
 
+  // 검색 조건 상태
+  const [searchCondition, setSearchCondition] = useState<QuestionSearchCondition>({
+    keyword: '',
+    category: '',
+    difficulty: '',
+    questionType: '',
+  });
+
+  // 검색 버튼 클릭 여부 (필터 활성화 여부)
+  const [isFiltered, setIsFiltered] = useState<boolean>(false);
+
   useEffect(() => {
     refreshQuestions();
   }, [refreshQuestions]);
+
+  // 필터링된 질문 목록 계산
+  const filteredQuestions = useMemo(() => {
+    if (!isFiltered) {
+      return questions;
+    }
+    return filterQuestions(questions, searchCondition);
+  }, [questions, searchCondition, isFiltered]);
+
+  const handleSearch = (condition: QuestionSearchCondition) => {
+    setSearchCondition(condition);
+    setIsFiltered(true);
+  };
+
+  const handleReset = () => {
+    setSearchCondition({
+      keyword: '',
+      category: '',
+      difficulty: '',
+      questionType: '',
+    });
+    setIsFiltered(false);
+  };
 
   if (isLoading) {
     return (
@@ -44,7 +81,7 @@ export const QuestionListPage: React.FC = () => {
           <h2 className="text-xl font-bold tracking-tight text-zinc-100 flex items-center gap-2">
             <span>Interview Questions</span>
             <span className="text-xs font-mono font-normal bg-zinc-900 border border-zinc-800 text-zinc-400 px-2 py-0.5 rounded-full">
-              {questions.length} total
+              {isFiltered ? `총 ${questions.length}개 중 ${filteredQuestions.length}개 표시` : `총 ${questions.length}개`}
             </span>
           </h2>
           <p className="text-xs text-zinc-400 mt-1">
@@ -60,8 +97,27 @@ export const QuestionListPage: React.FC = () => {
         </Link>
       </div>
 
+      {/* Search and Filter Panel */}
+      <QuestionSearchFilter onSearch={handleSearch} onReset={handleReset} />
+
       {/* Main Table Content */}
-      <QuestionTable questions={questions} />
+      {isFiltered && filteredQuestions.length === 0 ? (
+        <div className="text-center py-16 bg-zinc-900/30 border border-zinc-800 border-dashed rounded-lg flex flex-col items-center justify-center space-y-3">
+          <SearchX className="w-8 h-8 text-zinc-500" />
+          <div className="space-y-1">
+            <p className="text-zinc-400 text-sm font-medium">검색 결과가 없습니다.</p>
+            <p className="text-zinc-500 text-xs">검색 조건을 다르게 설정하여 다시 검색해 보세요.</p>
+          </div>
+          <button
+            onClick={handleReset}
+            className="inline-flex items-center justify-center px-3.5 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-medium rounded border border-zinc-700 transition-colors cursor-pointer"
+          >
+            검색 조건 초기화
+          </button>
+        </div>
+      ) : (
+        <QuestionTable questions={filteredQuestions} />
+      )}
 
       {/* Quick Tips or Guides */}
       <div className="bg-zinc-900/50 border border-zinc-800 p-4 rounded-lg flex items-start space-x-3 text-xs text-zinc-500">
