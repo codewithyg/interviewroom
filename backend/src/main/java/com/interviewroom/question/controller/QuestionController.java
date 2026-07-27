@@ -32,12 +32,6 @@ public class QuestionController {
 
     @GetMapping
     public ResponseEntity<List<QuestionListResponse>> getQuestions(@ModelAttribute QuestionSearchCondition condition) {
-        System.out.println("keyword = " + condition.getKeyword());
-        System.out.println("category = " + condition.getCategory());
-        System.out.println("difficulty = " + condition.getDifficulty());
-        System.out.println("questionType = " + condition.getQuestionType());
-
-
         return ResponseEntity.ok(questionService.getQuestions(condition));
     }
 

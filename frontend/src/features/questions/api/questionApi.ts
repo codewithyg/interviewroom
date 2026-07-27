@@ -4,6 +4,8 @@ import type {
   QuestionCreateRequest,
   QuestionUpdateRequest,
 } from '../types/question';
+import type { QuestionSearchCondition } from '../types/questionSearch';
+import { buildQuestionSearchParams } from '../utils/questionSearch';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/v1';
 
@@ -34,8 +36,17 @@ async function handleResponse<T>(response: Response): Promise<T> {
 /**
  * 1. 질문 목록 조회 (GET /questions)
  */
-export async function getQuestions(): Promise<InterviewQuestionListItem[]> {
-  const response = await fetch(`${BASE_URL}/questions`, {
+export async function getQuestions(condition?: QuestionSearchCondition): Promise<InterviewQuestionListItem[]> {
+  let url = `${BASE_URL}/questions`;
+  if (condition) {
+    const params = buildQuestionSearchParams(condition);
+    const queryString = params.toString();
+    if (queryString) {
+      url = `${url}?${queryString}`;
+    }
+  }
+
+  const response = await fetch(url, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
