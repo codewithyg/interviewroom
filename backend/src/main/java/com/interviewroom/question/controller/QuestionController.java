@@ -4,6 +4,7 @@ import com.interviewroom.question.dto.QuestionCreateRequest;
 import com.interviewroom.question.dto.QuestionDetailResponse;
 import com.interviewroom.question.dto.QuestionListResponse;
 import com.interviewroom.question.dto.QuestionUpdateRequest;
+import com.interviewroom.question.dto.request.QuestionSearchCondition;
 import com.interviewroom.question.service.QuestionService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -30,9 +31,14 @@ public class QuestionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<QuestionListResponse>> getQuestions() {
-        List<QuestionListResponse> response = questionService.getQuestions();
-        return ResponseEntity.ok(response);
+    public ResponseEntity<List<QuestionListResponse>> getQuestions(@ModelAttribute QuestionSearchCondition condition) {
+        System.out.println("keyword = " + condition.getKeyword());
+        System.out.println("category = " + condition.getCategory());
+        System.out.println("difficulty = " + condition.getDifficulty());
+        System.out.println("questionType = " + condition.getQuestionType());
+
+
+        return ResponseEntity.ok(questionService.getQuestions(condition));
     }
 
     @GetMapping("/{questionId}")

@@ -5,6 +5,7 @@ import com.interviewroom.question.dto.QuestionCreateRequest;
 import com.interviewroom.question.dto.QuestionDetailResponse;
 import com.interviewroom.question.dto.QuestionListResponse;
 import com.interviewroom.question.dto.QuestionUpdateRequest;
+import com.interviewroom.question.dto.request.QuestionSearchCondition;
 import com.interviewroom.question.exception.QuestionNotFoundException;
 import com.interviewroom.question.repository.InterviewQuestionRepository;
 import org.springframework.stereotype.Service;
@@ -37,8 +38,8 @@ public class QuestionService {
     }
 
     @Transactional(readOnly = true)
-    public List<QuestionListResponse> getQuestions() {
-        return interviewQuestionRepository.findAll()
+    public List<QuestionListResponse> getQuestions(QuestionSearchCondition condition) {
+        return interviewQuestionRepository.search(condition)
                 .stream()
                 .map(QuestionListResponse::new)
                 .toList();
