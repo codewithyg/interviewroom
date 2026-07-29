@@ -6,6 +6,7 @@ import com.interviewroom.question.dto.QuestionListResponse;
 import com.interviewroom.question.dto.QuestionUpdateRequest;
 import com.interviewroom.question.dto.request.QuestionSearchCondition;
 import com.interviewroom.question.service.QuestionService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(
+        name = "Interview Question",
+        description = "면접 질문 관리 API"
+)
 @RestController
 @RequestMapping("/api/v1/questions")
 public class QuestionController {
