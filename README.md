@@ -2,7 +2,7 @@
 
 면접 준비 과정에서 예상 질문과 실제 면접 질문을 기록하고, 카테고리·난이도·유형별로 분류하여 관리하는 웹 애플리케이션입니다.
 
-개인 프로젝트로 개발 중이며, 현재 기본적인 질문 CRUD 기능과 프론트엔드·백엔드 API 연동을 구현했습니다.
+Java/Spring Boot 백엔드 개발을 중심으로 진행하는 개인 프로젝트입니다. 현재 기본적인 질문 CRUD 기능과 프론트엔드·백엔드 API 연동을 구현했으며, 추가 기능 개발 및 기존 기능 개선을 진행하고 있습니다.
 
 ## 📸 Screenshots
 
@@ -48,6 +48,10 @@
 | Database | MySQL |
 | Infrastructure | Docker, Home Server VM |
 | Tools | Git, GitHub, Gradle, Postman |
+
+### AI 활용
+
+프론트엔드 UI 구성에 AI 개발 도구(Google Antigravity)를 활용했습니다. 백엔드 개발을 중심으로 질문 CRUD REST API와 데이터베이스 연동 기능을 구현했으며, 프론트엔드와 백엔드 간 API 연동 및 기본 동작을 확인했습니다.
 
 ## 🏗 Architecture
 
